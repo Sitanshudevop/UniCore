@@ -3,3 +3,5 @@ server/*.class
 server/*.tmp
 src/*.class
 src/*.tmp
+bin/
+scratch/

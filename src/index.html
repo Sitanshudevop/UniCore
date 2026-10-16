@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=20261016b" />
 </head>
 <body>
   <section class="auth-screen" id="auth-screen" aria-label="Sign in to UniCore">
@@ -88,9 +88,17 @@
   <div class="hidden" aria-hidden="true"><button id="clear-logs"></button><button id="telemetry-toggle"></button><div id="telemetry-feed"></div></div>
   <div class="modal-backdrop" id="modal-backdrop"><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
   <div class="command-backdrop" id="command-backdrop"><div class="command-box"><div class="command-input-row"><span>⌕</span><input id="command-input" placeholder="Search notes, tasks, places..." autocomplete="off" /><kbd>ESC</kbd></div><div class="command-hint">QUICK ACTIONS</div><div id="command-results" class="command-results"></div><div class="command-footer"><span>↑↓ to navigate</span><span><kbd>↵</kbd> to select</span><span><kbd>esc</kbd> to close</span></div></div></div>
-  <script src="app.js"></script>
+  <script src="app.js?v=20261016b"></script>
   <script>
-    document.addEventListener('submit',event=>{if(event.target.matches('.modal-form')&&typeof renderTransactions==='function')setTimeout(()=>renderTransactions(),0)});
+    document.addEventListener('submit',event=>{
+      if(event.target.matches('.modal-form')){
+        const backdrop=document.getElementById('modal-backdrop');
+        if(backdrop)backdrop.classList.remove('open');
+        const modal=document.getElementById('modal');
+        if(modal)modal.classList.remove('modal-pdf');
+        if(typeof renderTransactions==='function')setTimeout(()=>renderTransactions(),0);
+      }
+    });
   </script>
   <script>
     (async()=>{try{const response=await fetch('/api/me',{credentials:'same-origin'});if(!response.ok)return;const user=(await response.json()).user||{};const name=(user.name||'Student').trim();const initials=name.split(/\s+/).slice(0,2).map(part=>part[0]).join('').toUpperCase();const markup=user.picture?`<img class="gmail-avatar-mark user-avatar-photo" src="${user.picture}" referrerpolicy="no-referrer" alt="${name} profile photo" />`:initials;document.querySelectorAll('.avatar,#user-avatar').forEach(node=>{node.innerHTML=markup;node.setAttribute('aria-label',user.picture?'Google account profile photo':'User avatar')})}catch{}})();
