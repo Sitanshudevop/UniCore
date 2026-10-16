@@ -13,6 +13,15 @@
 > 
 > Designed as a flagship **Data Structures & Algorithms (DSA) Major Project**, every functional module is powered by custom-engineered algorithmic implementations rather than third-party libraries or standard SQL engines.
 
+### 📚 Major Project Deliverables & Evaluation Links
+| Deliverable | Location | Description |
+|---|---|---|
+| **Project Report** | [📄 `docs/PROJECT_REPORT.md`](docs/PROJECT_REPORT.md) | Complete formal academic Major Project Report |
+| **DSA Specification** | [📐 `docs/DSA_SPECIFICATION.md`](docs/DSA_SPECIFICATION.md) | Invariants, mathematical proofs & algorithms deep-dive |
+| **System Architecture**| [🏗 `docs/SYSTEM_ARCHITECTURE.md`](docs/SYSTEM_ARCHITECTURE.md) | Client-server sequence diagrams & cryptographic model |
+| **User Manual** | [📖 `docs/USER_MANUAL.md`](docs/USER_MANUAL.md) | Step-by-step setup & evaluator walkthrough |
+| **Output Screenshots** | [📸 `screenshots/`](screenshots/) | High-resolution output captures of all application views |
+
 ---
 
 ## 📑 Table of Contents
@@ -174,23 +183,30 @@ flowchart TD
 ## 6. Directory & Project Structure
 
 ```text
-unicore/
-├── README.md                      # Comprehensive academic & project documentation
+Major-Project/ (UniCore/)
+├── README.md                      # Primary project documentation & overview
 ├── run.bat                        # One-click Windows development launcher
 ├── .gitignore                     # Git ignore rules (excludes data, classes, temp files)
-├── src/                           # Application source code
+├── src/                           # Application source code (Zero external dependencies)
 │   ├── Server.java                # Native Java 17+ HTTP server, auth & JSON persistence
 │   ├── index.html                 # Semantic application views, modals & layout
-│   ├── app.js                     # Custom DSA implementations, UI rendering & client logic
+│   ├── app.js                     # 12 handcrafted DSA modules, controllers & IndexedDB
 │   └── styles.css                 # Responsive stylesheet & design system
-├── server/
-│   └── data/                      # Auto-created at runtime for account persistence
-│       ├── users.tsv              # Base64-encoded user accounts with password salts & hashes
-│       └── <uuid>.json            # Individual user workspace files (atomic writes)
-├── docs/                          # Project reports and documentation
-│   └── README.md
-└── screenshots/                   # Application screenshots for evaluation
-    └── README.md
+├── docs/                          # Project report and supporting documents
+│   ├── PROJECT_REPORT.md          # Comprehensive Academic Major Project Report
+│   ├── DSA_SPECIFICATION.md       # Technical proofs, invariants & algorithmic specs
+│   ├── SYSTEM_ARCHITECTURE.md     # Architecture diagrams, data flow & security model
+│   └── USER_MANUAL.md             # Student & evaluator operational guide
+└── screenshots/                   # Project output screenshots
+    ├── 01_auth_screen.png         # Authentication & Welcome Screen
+    ├── 02_dashboard_overview.png  # Overview Dashboard & Daily Stats
+    ├── 03_study_notes_lru.png     # Notes Library & O(1) LRU Cache Aside
+    ├── 04_pdf_viewer_modal.png    # Interactive Embedded PDF Reader Modal
+    ├── 05_planner_week_view.png   # Planner (Week View & Knapsack DP Optimizer)
+    ├── 06_planner_day_view.png    # Planner (Day View with Task Checkmarks)
+    ├── 07_expenses_budget_gauge.png # Multi-Color Budget Gauge & AVL Transactions
+    ├── 08_command_palette_trie.png # Global Ctrl+K Prefix Trie Command Palette
+    └── 09_notifications_and_sync.png # Cloud Sync & Notifications Center
 ```
 
 ---
