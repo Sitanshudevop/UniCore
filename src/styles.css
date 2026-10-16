@@ -36,3 +36,9 @@
 
 .queue-item-remove{border:0;background:none;color:#9aa59d;cursor:pointer;font-size:16px;padding:0 6px;margin-left:auto;border-radius:4px;line-height:1.2;transition:all .15s ease}
 .queue-item-remove:hover{color:#b34f48;background:#fdf2f1}
+
+.budget-gauge:before{display:none!important}
+.budget-gauge{height:8px!important;background:#edf1ed;border-radius:6px;margin:16px 0 8px;position:relative}
+.budget-gauge-track{position:absolute;inset:0;display:flex;overflow:hidden;border-radius:6px;background:#edf1ed}
+.gauge-seg{height:100%;transition:width .25s ease;display:block}
+.cat-dot.other{background:#889f91}
