@@ -225,3 +225,322 @@ if (uploadBtn && noteFileInput) {
     reader.readAsDataURL(file);
   };
 }
+
+
+function sanitizePdfText(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/[\u2014\u2013]/g, '-')
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u201C\u201D]/g, '"')
+    .replace(/[\u2022\u00B7]/g, '*')
+    .replace(/\u20B9/g, 'Rs. ')
+    .replace(/[^\x20-\x7E]/g, ' ')
+    .replace(/\\/g, '\\\\')
+    .replace(/\(/g, '\\(')
+    .replace(/\)/g, '\\)');
+}
+
+function wrapPdfWords(text, maxChars = 76) {
+  if (!text) return [];
+  const words = String(text).replace(/\r\n/g, '\n').replace(/\r/g, '\n').split(/\s+/);
+  const lines = [];
+  let current = '';
+  for (const word of words) {
+    if (!word) continue;
+    if (!current) {
+      current = word;
+    } else if ((current + ' ' + word).length <= maxChars) {
+      current += ' ' + word;
+    } else {
+      lines.push(current);
+      current = word;
+    }
+  }
+  if (current) lines.push(current);
+  return lines;
+}
+
+function generateNotesPdf(notes, user = {}) {
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const marginX = 54;
+  const marginTop = 54;
+  const marginBottom = 54;
+
+  const pages = [];
+  let currentPageLines = [];
+  let currentY = pageHeight - marginTop;
+
+  function newPage() {
+    currentPageLines = [];
+    currentY = pageHeight - marginTop;
+    pages.push(currentPageLines);
+    currentPageLines.push({
+      font: '/F2',
+      size: 9,
+      gray: 0.45,
+      x: marginX,
+      y: pageHeight - 36,
+      text: 'UNICORE - STUDENT LIFE OS  |  SEMESTER STUDY ARCHIVE'
+    });
+    currentPageLines.push({
+      type: 'line',
+      x1: marginX,
+      y1: pageHeight - 42,
+      x2: pageWidth - marginX,
+      y2: pageHeight - 42,
+      gray: 0.85
+    });
+  }
+
+  newPage();
+
+  // Document Title banner on page 1
+  currentPageLines.push({
+    font: '/F2',
+    size: 22,
+    gray: 0.1,
+    x: marginX,
+    y: currentY - 10,
+    text: 'Semester Study Notes'
+  });
+  currentY -= 32;
+
+  const dateStr = new Date().toLocaleDateString('en-IN', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+  const studentName = (user && user.name) ? user.name : 'Student';
+  currentPageLines.push({
+    font: '/F1',
+    size: 10,
+    gray: 0.4,
+    x: marginX,
+    y: currentY,
+    text: `Exported on ${dateStr}  *  Student: ${studentName}  *  Total Notes: ${notes.length}`
+  });
+  currentY -= 28;
+
+  currentPageLines.push({
+    type: 'line',
+    x1: marginX,
+    y1: currentY + 10,
+    x2: pageWidth - marginX,
+    y2: currentY + 10,
+    gray: 0.8
+  });
+
+  if (!notes || notes.length === 0) {
+    currentPageLines.push({
+      font: '/F3',
+      size: 11,
+      gray: 0.5,
+      x: marginX,
+      y: currentY - 20,
+      text: 'No notes found in workspace.'
+    });
+  }
+
+  notes.forEach((note, index) => {
+    if (currentY < marginBottom + 80) {
+      newPage();
+    }
+
+    currentY -= 14;
+    const cardTop = currentY;
+
+    const noteTitle = `${index + 1}. ${note.title || 'Untitled Note'}`;
+    currentPageLines.push({
+      font: '/F2',
+      size: 13,
+      gray: 0.12,
+      x: marginX + 12,
+      y: currentY,
+      text: noteTitle
+    });
+    currentY -= 15;
+
+    const metaParts = [];
+    if (note.folder) metaParts.push(`Subject: ${note.folder}`);
+    if (note.isPdf || note.folder === 'Uploaded PDFs') metaParts.push('Type: PDF Document');
+    if (note.star) metaParts.push('* Starred');
+    if (note.updated) metaParts.push(`Updated: ${note.updated}`);
+    const metaText = metaParts.join('   |   ');
+
+    currentPageLines.push({
+      font: '/F2',
+      size: 8.5,
+      gray: 0.35,
+      x: marginX + 12,
+      y: currentY,
+      text: metaText
+    });
+    currentY -= 15;
+
+    const content = note.text || (note.fileName ? `Uploaded file: ${note.fileName}` : 'No content.');
+    const wrapped = wrapPdfWords(content, 78);
+
+    for (const line of wrapped) {
+      if (currentY < marginBottom + 25) {
+        newPage();
+      }
+      currentPageLines.push({
+        font: '/F1',
+        size: 9.5,
+        gray: 0.22,
+        x: marginX + 12,
+        y: currentY,
+        text: line
+      });
+      currentY -= 13;
+    }
+
+    const cardBottom = currentY + 5;
+    currentPageLines.push({
+      type: 'rect',
+      x: marginX,
+      y: cardBottom,
+      w: 3,
+      h: Math.max(16, cardTop - cardBottom + 12),
+      r: 0.15,
+      g: 0.46,
+      b: 0.32
+    });
+
+    currentY -= 12;
+    currentPageLines.push({
+      type: 'line',
+      x1: marginX,
+      y1: currentY + 6,
+      x2: pageWidth - marginX,
+      y2: currentY + 6,
+      gray: 0.92
+    });
+  });
+
+  const totalPages = pages.length;
+  pages.forEach((pageLines, pageIdx) => {
+    pageLines.push({
+      type: 'line',
+      x1: marginX,
+      y1: marginBottom - 12,
+      x2: pageWidth - marginX,
+      y2: marginBottom - 12,
+      gray: 0.85
+    });
+    pageLines.push({
+      font: '/F1',
+      size: 8.5,
+      gray: 0.5,
+      x: marginX,
+      y: marginBottom - 24,
+      text: 'UniCore - Built for students  *  Local-First Academic OS'
+    });
+    pageLines.push({
+      font: '/F2',
+      size: 8.5,
+      gray: 0.5,
+      x: pageWidth - marginX - 55,
+      y: marginBottom - 24,
+      text: `Page ${pageIdx + 1} of ${totalPages}`
+    });
+  });
+
+  const objects = [];
+  const pageObjIds = [];
+
+  for (let i = 0; i < totalPages; i++) {
+    const pageId = 6 + i * 2;
+    pageObjIds.push(`${pageId} 0 R`);
+  }
+
+  objects[1] = '<< /Type /Catalog /Pages 2 0 R >>';
+  objects[2] = `<< /Type /Pages /Kids [ ${pageObjIds.join(' ')} ] /Count ${totalPages} >>`;
+  objects[3] = '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>';
+  objects[4] = '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>';
+  objects[5] = '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Oblique >>';
+
+  pages.forEach((pageItems, i) => {
+    const pageId = 6 + i * 2;
+    const contentId = 7 + i * 2;
+
+    objects[pageId] = `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> /Contents ${contentId} 0 R >>`;
+
+    let streamOps = [];
+    pageItems.forEach(item => {
+      if (item.type === 'line') {
+        streamOps.push(`${item.gray.toFixed(2)} G`);
+        streamOps.push(`${item.x1.toFixed(1)} ${item.y1.toFixed(1)} m`);
+        streamOps.push(`${item.x2.toFixed(1)} ${item.y2.toFixed(1)} l`);
+        streamOps.push('S');
+      } else if (item.type === 'rect') {
+        streamOps.push(`${item.r.toFixed(2)} ${item.g.toFixed(2)} ${item.b.toFixed(2)} rg`);
+        streamOps.push(`${item.x.toFixed(1)} ${item.y.toFixed(1)} ${item.w.toFixed(1)} ${item.h.toFixed(1)} re`);
+        streamOps.push('f');
+      } else {
+        streamOps.push('BT');
+        streamOps.push(`${item.font} ${item.size} Tf`);
+        streamOps.push(`${item.gray.toFixed(2)} g`);
+        streamOps.push(`${item.x.toFixed(1)} ${item.y.toFixed(1)} Td`);
+        streamOps.push(`(${sanitizePdfText(item.text)}) Tj`);
+        streamOps.push('ET');
+      }
+    });
+
+    const streamBody = streamOps.join('\n');
+    let byteLen = 0;
+    for (let c = 0; c < streamBody.length; c++) {
+      const code = streamBody.charCodeAt(c);
+      byteLen += code < 0x80 ? 1 : code < 0x800 ? 2 : code < 0xd800 || code >= 0xe000 ? 3 : 4;
+    }
+    objects[contentId] = `<< /Length ${byteLen} >>\nstream\n${streamBody}\nendstream`;
+  });
+
+  let pdf = '%PDF-1.4\n';
+  const offsets = [];
+
+  for (let id = 1; id < objects.length; id++) {
+    let offset = 0;
+    for (let c = 0; c < pdf.length; c++) {
+      const code = pdf.charCodeAt(c);
+      offset += code < 0x80 ? 1 : code < 0x800 ? 2 : code < 0xd800 || code >= 0xe000 ? 3 : 4;
+    }
+    offsets[id] = offset;
+    pdf += `${id} 0 obj\n${objects[id]}\nendobj\n`;
+  }
+
+  let xrefOffset = 0;
+  for (let c = 0; c < pdf.length; c++) {
+    const code = pdf.charCodeAt(c);
+    xrefOffset += code < 0x80 ? 1 : code < 0x800 ? 2 : code < 0xd800 || code >= 0xe000 ? 3 : 4;
+  }
+
+  pdf += `xref\n0 ${objects.length}\n0000000000 65535 f \n`;
+  for (let id = 1; id < objects.length; id++) {
+    pdf += `${String(offsets[id]).padStart(10, '0')} 00000 n \n`;
+  }
+  pdf += `trailer\n<< /Size ${objects.length} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
+
+  return pdf;
+}
+
+function exportNotesPdf() {
+  const notes = (data && Array.isArray(data.notes)) ? data.notes : [];
+  if (!notes.length) {
+    toast('No notes found to export.');
+    return;
+  }
+  const pdfString = generateNotesPdf(notes, activeUser || {});
+  download('unicore-study-notes.pdf', pdfString, 'application/pdf');
+  toast(`Exported ${notes.length} note${notes.length === 1 ? '' : 's'} to PDF archive!`);
+}
+
+window.exportNotesPdf = exportNotesPdf;
+window.data = data;
+
+const archiveBtn = $('#archive-notes');
+if (archiveBtn) {
+  archiveBtn.onclick = exportNotesPdf;
+}
