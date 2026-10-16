@@ -42,3 +42,45 @@
 .budget-gauge-track{position:absolute;inset:0;display:flex;overflow:hidden;border-radius:6px;background:#edf1ed}
 .gauge-seg{height:100%;transition:width .25s ease;display:block}
 .cat-dot.other{background:#889f91}
+
+.topbar-cloud-icon{font-size:17px;line-height:1;display:inline-block;color:#4f6356;transition:transform .15s ease}
+.bell:hover .topbar-cloud-icon{color:#236d4c;transform:scale(1.1)}
+.bell{cursor:pointer;position:relative}
+
+.notifications-popover{position:absolute;top:62px;right:37px;width:370px;max-width:calc(100vw - 32px);background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 16px 42px rgba(32,41,35,.12),0 2px 8px rgba(32,41,35,.04);z-index:50;display:flex;flex-direction:column;overflow:hidden;animation:notifFadeIn .16s ease}
+@keyframes notifFadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.notif-head{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid #edf0ec;background:#fbfcfb}
+.notif-head-title{display:flex;align-items:center;gap:10px}
+.notif-cloud-symbol{font-size:20px;color:#267653}
+.notif-head-title h3{font:700 13.5px Manrope,sans-serif;margin:0;color:var(--ink)}
+.notif-head-title small{font-size:10.5px;color:#7b887f;display:block}
+.notif-clear-btn{border:0;background:none;font-size:11px;color:#6a8c73;cursor:pointer;padding:4px 8px;border-radius:4px;font-weight:500;transition:.15s}
+.notif-clear-btn:hover{background:#edf5ef;color:#267653}
+.notif-body{padding:12px 14px;display:grid;gap:9px;max-height:390px;overflow-y:auto}
+.notif-card{display:flex;align-items:flex-start;gap:11px;padding:11px;border-radius:8px;background:#f9fbf9;border:1px solid #edf1ee;transition:all .15s ease}
+.notif-card.notif-clickable{cursor:pointer}
+.notif-card.notif-clickable:hover{background:#f1f7f2;border-color:#d7e5d9;transform:translateY(-1px)}
+.notif-icon{width:28px;height:28px;border-radius:7px;display:grid;place-items:center;font-size:13.5px;flex:0 0 28px}
+.notif-icon.green{background:#eaf5ed;color:#357b4f}
+.notif-icon.orange{background:#fdf2e9;color:#cf7c3e}
+.notif-icon.purple{background:#f3eff9;color:#7f66a8}
+.notif-icon.teal{background:#edf6f4;color:#3d867c}
+.notif-card-copy{display:grid;gap:3px;min-width:0;flex:1}
+.notif-card-copy b{font-size:11.8px;color:var(--ink);font-weight:600}
+.notif-card-copy p{font-size:10.8px;color:#65736a;margin:0;line-height:1.4}
+.notif-card-copy small{font-size:9.8px;color:#89968e}
+.notif-foot{display:flex;align-items:center;gap:7px;padding:9px 16px;border-top:1px solid #edf0ec;background:#fbfcfb;font-size:10.5px;color:#7d8b82}
+.notif-live-dot{color:#38a169;font-size:10px}
+
+.view-tabs button{cursor:pointer;transition:all .15s ease}
+.view-tabs button.selected{background:#edf5ef!important;color:#236d4c!important;font-weight:700!important}
+.day-view-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:#edf5ef;color:#267653;border-radius:5px;font-size:10px;font-weight:700;letter-spacing:.3px;vertical-align:middle;margin-left:7px}
+.timeline-event-check{cursor:pointer;border:0;background:none;padding:0;margin-right:6px;font-size:13px;color:#9aa59d;transition:color .15s ease;display:inline-block;vertical-align:middle}
+.timeline-event-check.done{color:#357b4f}
+.timeline-event-check:hover{color:#267653}
+.task-done .timeline-hour{color:#b3bbb5}
+.task-done-title{text-decoration:line-through;color:#859088}
+.timeline-duration{font-size:10.5px;color:#8e9991;font-weight:500;margin-left:auto}
+.timeline-add-block-btn{margin-top:14px;width:100%;border:1px dashed #d5ded7;background:#fbfcfb;border-radius:6px;padding:9px;font-size:11.5px;font-weight:600;color:#557e62;cursor:pointer;transition:all .15s ease;display:flex;align-items:center;justify-content:center;gap:6px}
+.timeline-add-block-btn:hover{background:#edf5ef;border-color:#79ab87;color:#205e3f}
+

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20261016b" />
+  <link rel="stylesheet" href="styles.css?v=20261016c" />
 </head>
 <body>
   <section class="auth-screen" id="auth-screen" aria-label="Sign in to UniCore">
@@ -47,7 +47,7 @@
     </aside>
 
     <main class="main-area">
-      <header class="topbar"><div class="breadcrumbs"><span>My workspace</span><span class="crumb-slash">/</span><b id="page-crumb">Overview</b></div><div class="top-actions"><span id="workspace-mode-badge" class="workspace-mode-badge"></span><span class="date-label" id="today-date"></span><button class="icon-button search-shortcut" id="open-command" aria-label="Search"><span>⌕</span><kbd>Ctrl K</kbd></button><button class="icon-button bell" aria-label="Notifications">♧<i></i></button><span class="top-avatar hidden" id="user-avatar" aria-hidden="true"></span></div></header>
+      <header class="topbar"><div class="breadcrumbs"><span>My workspace</span><span class="crumb-slash">/</span><b id="page-crumb">Overview</b></div><div class="top-actions"><span id="workspace-mode-badge" class="workspace-mode-badge"></span><span class="date-label" id="today-date"></span><button class="icon-button search-shortcut" id="open-command" aria-label="Search"><span>⌕</span><kbd>Ctrl K</kbd></button><button class="icon-button bell" id="notifications-button" aria-label="Notifications and Workspace Sync" title="Notifications & Cloud Sync"><span class="topbar-cloud-icon">☁</span><i id="notif-badge"></i></button><span class="top-avatar hidden" id="user-avatar" aria-hidden="true"></span></div><div class="notifications-popover hidden" id="notifications-popover" role="dialog" aria-label="Notifications and Sync Center"><div class="notif-head"><div class="notif-head-title"><span class="notif-cloud-symbol">☁</span><div><h3>Notifications & Sync</h3><small id="notif-sync-status">Workspace synced</small></div></div><button type="button" class="notif-clear-btn" id="notif-clear-btn">Clear all</button></div><div class="notif-body" id="notif-body"></div><div class="notif-foot"><span class="notif-live-dot">●</span><span id="notif-foot-text">Local-first sync engine active</span></div></div></header>
       <div class="content-wrap">
         <section class="page active" id="page-dashboard">
           <div class="welcome-row"><div><div class="eyebrow" id="dashboard-date"><span class="sun-icon">✳</span></div><h1>Good morning, <span id="greeting-name">User</span> <span class="wave">✦</span></h1><p class="subhead">A little progress today goes a long way. Here's your day at a glance.</p></div><button class="primary-button" data-go="planner"><span>＋</span> Plan my day</button></div>
@@ -70,7 +70,7 @@
 
         <section class="page" id="page-planner">
           <div class="page-header"><div><div class="eyebrow">MAKE ROOM FOR WHAT MATTERS</div><h1>Your planner</h1><p class="subhead">A flexible plan for a focused, balanced day.</p></div><button class="primary-button" id="new-block"><span>＋</span> Add time block</button></div>
-          <div class="planner-top"><div class="week-nav"><button id="week-prev">←</button><b id="week-range">October 12 – 18, 2026</b><button id="week-next">→</button><button class="today-button">Today</button></div><div class="view-tabs"><button class="selected">Week</button><button>Day</button><button class="more-button">···</button></div></div>
+          <div class="planner-top"><div class="week-nav"><button id="week-prev">←</button><b id="week-range">October 12 – 18, 2026</b><button id="week-next">→</button><button class="today-button">Today</button></div><div class="view-tabs"><button class="selected" id="view-tab-week" data-planner-view="week">Week</button><button id="view-tab-day" data-planner-view="day">Day</button><button class="more-button" id="view-tab-more" title="Planner options">···</button></div></div>
           <div class="week-strip" id="week-strip"></div>
           <div class="planner-layout"><section class="panel day-plan"><div class="panel-heading"><div><h2 id="selected-day-title"></h2><p>Your plan for today</p></div><button class="more-button">···</button></div><div class="day-timeline" id="planner-timeline"></div></section><aside class="planner-side"><section class="panel optimize-panel"><div class="panel-heading"><div><h2>Make the most of today</h2><p>Fit your priorities into 4 free hours.</p></div><span class="optimize-icon">✦</span></div><div class="task-pick-list" id="optimize-tasks"></div><div class="optimize-result" id="optimize-result"><span>✨</span><span>Select tasks and we'll find the best fit.</span></div><button class="secondary-button full-button" id="optimize-button">Optimize my time <span>→</span></button></section><section class="panel pomodoro-panel"><div class="panel-heading"><div><h2>Focus queue</h2><p>Today's study & break rotation</p></div><span class="queue-badge" id="queue-size">3 blocks</span></div><div id="focus-queue" class="queue-list"></div><div class="queue-actions"><button id="queue-next">Next block →</button><button id="queue-add">＋ Add study block</button></div></section></aside></div>
         </section>
@@ -88,7 +88,7 @@
   <div class="hidden" aria-hidden="true"><button id="clear-logs"></button><button id="telemetry-toggle"></button><div id="telemetry-feed"></div></div>
   <div class="modal-backdrop" id="modal-backdrop"><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
   <div class="command-backdrop" id="command-backdrop"><div class="command-box"><div class="command-input-row"><span>⌕</span><input id="command-input" placeholder="Search notes, tasks, places..." autocomplete="off" /><kbd>ESC</kbd></div><div class="command-hint">QUICK ACTIONS</div><div id="command-results" class="command-results"></div><div class="command-footer"><span>↑↓ to navigate</span><span><kbd>↵</kbd> to select</span><span><kbd>esc</kbd> to close</span></div></div></div>
-  <script src="app.js?v=20261016b"></script>
+  <script src="app.js?v=20261016c"></script>
   <script>
     document.addEventListener('submit',event=>{
       if(event.target.matches('.modal-form')){
