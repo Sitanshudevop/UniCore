@@ -15,7 +15,8 @@ import java.util.concurrent.*;
 
 /** Minimal same-origin Java backend for UniCore local deployments. */
 public class Server {
-    static final int PORT = Integer.parseInt(System.getenv().getOrDefault("UNICORE_PORT", "8000"));
+    static final int PORT = Integer.parseInt(System.getenv("PORT") != null ? System.getenv("PORT") : System.getenv().getOrDefault("UNICORE_PORT", "8000"));
+    static final String HOST = System.getenv().getOrDefault("UNICORE_HOST", "0.0.0.0");
     static final Path ROOT = Paths.get(System.getProperty("user.dir")).toAbsolutePath().normalize();
     static final Path WEB = ROOT.resolve("src");
     static final Path STORE = ROOT.resolve("server/data");
@@ -37,7 +38,7 @@ public class Server {
 
     public static void main(String[] args) throws Exception {
         Files.createDirectories(STORE); loadUsers();
-        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", PORT), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress(HOST, PORT), 0);
         server.createContext("/api/", Server::api);
         server.createContext("/", Server::staticFile);
         server.setExecutor(Executors.newFixedThreadPool(Math.max(4, Runtime.getRuntime().availableProcessors())));

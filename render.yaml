@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: unicore
+    env: docker
+    plan: free
+    region: oregon
+    healthCheckPath: /api/config
+    envVars:
+      - key: PORT
+        value: 8000
