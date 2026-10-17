@@ -84,3 +84,33 @@
 .timeline-add-block-btn{margin-top:14px;width:100%;border:1px dashed #d5ded7;background:#fbfcfb;border-radius:6px;padding:9px;font-size:11.5px;font-weight:600;color:#557e62;cursor:pointer;transition:all .15s ease;display:flex;align-items:center;justify-content:center;gap:6px}
 .timeline-add-block-btn:hover{background:#edf5ef;border-color:#79ab87;color:#205e3f}
 
+.focus-panel{position:relative}
+.timer-task{cursor:pointer;transition:background .15s ease,border-color .15s ease;user-select:none}
+.timer-task:hover{background:#fafcfa;border-color:#cbd6cd}
+.timer-task .task-check{cursor:pointer;transition:transform .12s ease}
+.timer-task .task-check:hover{transform:scale(1.15)}
+#timer-task-menu{cursor:pointer;padding:2px 4px;font-size:12px;transition:transform .15s ease}
+.timer-task-dropdown{position:absolute;z-index:45;left:17px;right:17px;top:auto;background:#fff;border:1px solid #dbe3dc;border-radius:10px;box-shadow:0 14px 36px rgba(32,41,35,.14),0 2px 6px rgba(32,41,35,.04);overflow:hidden;animation:taskDropFade .14s ease;display:flex;flex-direction:column}
+@keyframes taskDropFade{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.task-dropdown-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#fbfcfb;border-bottom:1px solid #edf1ee;font-size:9.5px;letter-spacing:1px;font-weight:700;color:#7e8b81}
+.task-dropdown-close{border:0;background:none;font-size:12px;color:#8f9b92;cursor:pointer;padding:2px 6px;border-radius:4px}
+.task-dropdown-close:hover{background:#edf3ee;color:#223026}
+.task-dropdown-list{max-height:220px;overflow-y:auto;padding:6px;display:flex;flex-direction:column;gap:3px}
+.task-dropdown-item{display:flex;align-items:center;gap:9px;width:100%;padding:8px 10px;border:0;background:transparent;border-radius:6px;text-align:left;cursor:pointer;font-size:11.5px;color:var(--ink);transition:background .12s ease}
+.task-dropdown-item:hover{background:#f1f6f2}
+.task-dropdown-item.active{background:#e8f4ec;font-weight:600;color:#1e6a43}
+.dropdown-task-check{width:16px;height:16px;border-radius:50%;background:#edf5ef;color:#659875;display:grid;place-items:center;font-size:10px;flex:0 0 16px}
+.dropdown-task-check.done{background:#22c55e;color:#fff}
+.dropdown-task-info{display:grid;gap:2px;flex:1;min-width:0}
+.dropdown-task-info b{font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dropdown-task-info small{font-size:10px;color:#859288}
+.dropdown-active-badge{font-size:9.5px;background:#267653;color:#fff;padding:2px 6px;border-radius:4px;font-weight:700;margin-left:auto}
+.task-dropdown-empty{padding:18px 12px;text-align:center;color:#869289;font-size:11px;line-height:1.5}
+.task-dropdown-empty span{display:block;font-weight:600;color:#4c5b50;margin-bottom:2px}
+.task-dropdown-foot{border-top:1px solid #edf1ee;background:#fbfcfb;padding:6px 8px;display:flex;gap:6px}
+.task-dropdown-action-btn{flex:1;padding:7px 10px;border:1px solid #d5ded7;background:#fff;border-radius:5px;font-size:10.5px;font-weight:600;color:#267653;cursor:pointer;transition:all .12s ease;display:flex;align-items:center;justify-content:center;gap:5px}
+.task-dropdown-action-btn:hover{background:#edf5ef;border-color:#71a880}
+.task-dropdown-action-btn.secondary{flex:0 0 auto;color:#6b786f;border-color:#e0e6e1}
+.task-dropdown-action-btn.secondary:hover{background:#f5f7f5;color:#223026}
+
+
